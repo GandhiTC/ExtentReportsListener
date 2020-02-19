@@ -33,7 +33,8 @@ Can be run as a TestNG Suite
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-It is not feasible to add code for ExtentReports to each test file, using listeners instead prevents unnecessary code repetition and is much cleaner.
+It is not feasible to add code for ExtentReports to each test file, 
+using listeners instead prevents unnecessary code repetition and is much cleaner.
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -43,10 +44,12 @@ ExtentListener.java
 ---------------------------------------------------------------------------------------------------------------------------------------
 Code that customizes how ExtentReports interprets TestNG results.
 
-Includes code to make sure tests that are automatically skipped by TestNG (due to failed/missing methods listed in the "dependsOnMethods" @Test attribute)
+Includes code to make sure tests that are automatically skipped by TestNG 
+(due to failed/missing methods listed in the "dependsOnMethods" @Test attribute)
 are included in the ExtentReports results.  By default, they are not included, see the report file for TestCase1.
 
-In order to make the results of failed tests cleaner and easier to read, code to allow expanding/collapsing of the stack trace text was added.
+In order to make the results of failed tests cleaner and easier to read, 
+code to allow expanding/collapsing of the stack trace text was added.
 
 
 
