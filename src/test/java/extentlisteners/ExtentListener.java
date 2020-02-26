@@ -2,12 +2,8 @@ package extentlisteners;
 
 
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -23,14 +19,7 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 
 public class ExtentListener implements ITestListener
 {
-	private static String 					userDir 	= System.getProperty("user.dir");
-	private static Path 					userDirPath = Paths.get(userDir);
-	private static String 					projectName	= userDirPath.getFileName().toString();
-	private static SimpleDateFormat 		sdf 		= new SimpleDateFormat("MMM_dd_yyyy_hh_mm_ss_a_zzz");
-	private static String					dateString	= sdf.format(new Date());
-	private	static String					fileName	= dateString.replace(":", "_").replace(" ", "_") + "_" + projectName + ".html";
-	
-	private static ExtentReports			extent		= ExtentManager.createInstance(System.getProperty("user.dir") + "\\ExtentReports\\" + fileName);
+	private static ExtentReports			extent		= ExtentManager.createInstance();
 	public  static ThreadLocal<ExtentTest>	testReport	= new ThreadLocal<ExtentTest>();
 	
 	private static String					lastSkipped	= "";
@@ -89,6 +78,7 @@ public class ExtentListener implements ITestListener
 	@Override
 	public void onTestSkipped(ITestResult result)
 	{
+//				className	= result.getInstanceName();
 				methodName 	= result.getMethod().getMethodName() + "()";
 				logText		= "<b>TEST CASE SKIPPED : " + methodName + "</b>";
 		Markup	m			= MarkupHelper.createLabel(logText, ExtentColor.ORANGE);

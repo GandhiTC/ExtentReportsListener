@@ -2,6 +2,10 @@ package extentlisteners;
 
 
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
@@ -13,7 +17,7 @@ public class ExtentManager
 	private static ExtentReports extent;
 
 
-	public static ExtentReports createInstance(String fileName)
+	public static ExtentReports createInstance()
 	{
 		String css	  = "details {\r\n" +
 						"  font: \"Open Sans\", Calibri, sans-serif;\r\n" +
@@ -47,21 +51,44 @@ public class ExtentManager
 						"    width:30px;\r\n" +
 						"}";
 		
-		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(fileName);
-		htmlReporter.config().setTheme(Theme.STANDARD);
-		htmlReporter.config().setDocumentTitle(fileName);
+		String 				userDir 			= System.getProperty("user.dir");
+		Path 				userDirPath 		= Paths.get(userDir);
+		String 				projectName			= userDirPath.getFileName().toString();
+		String				reportName			= "Test Results for Project: " + projectName;
+		
+		Date				currentDate			= new Date();
+		
+		SimpleDateFormat 	simpleDateFormat	= new SimpleDateFormat("yyyy");
+		String				yearFolder			= simpleDateFormat.format(currentDate);
+		
+							simpleDateFormat	= new SimpleDateFormat("MMM");
+		String				monthFolder			= simpleDateFormat.format(currentDate);
+		
+							simpleDateFormat	= new SimpleDateFormat("dd-MMM-yyyy");
+		String				dayFolder			= simpleDateFormat.format(currentDate);
+		
+							simpleDateFormat	= new SimpleDateFormat("hh_mm_ss_aa_z");
+		String 				timeString			= simpleDateFormat.format(currentDate);
+		
+		String				fileName			= timeString + "___Test-Report.html";
+		String				filePath			= userDir + "/Reports/" + yearFolder + "/" + monthFolder + "/" + dayFolder + "/" + fileName;
+		
+		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(filePath);
 		htmlReporter.config().setEncoding("utf-8");
-		htmlReporter.config().setReportName(fileName);
 		htmlReporter.config().setCSS(css);
+		htmlReporter.config().setTheme(Theme.STANDARD);
+		htmlReporter.config().setDocumentTitle(reportName);
+		htmlReporter.config().setReportName(reportName);
 		
 		//	as an alternative to using htmlReporter.config() code lines, the extent-config.xml file could be loaded instead
-//		htmlReporter.loadXMLConfig(System.getProperty("user.dir") + "/extent-config.xml");
+//		htmlReporter.loadXMLConfig(userDir + "/Configuration/extent-config.xml");
 		
 		extent = new ExtentReports();
 		extent.attachReporter(htmlReporter);
-		extent.attachReporter(htmlReporter);
-		extent.setSystemInfo("Automation Tester", "Tejas Gandhi");
 		extent.setSystemInfo("Orgainzation", "com.github.GandhiTC");
+		extent.setSystemInfo("Host", "localhost");
+		extent.setSystemInfo("Environment", "QA");
+		extent.setSystemInfo("Tester", "Tejas Gandhi");
 		extent.setSystemInfo("Build No", "TG00-000x");
 		
 		return extent;
@@ -75,9 +102,9 @@ public class ExtentManager
 
 	public static void captureScreenshot()
 	{
-		File	scrFile	= ((TakesScreenshot)DriverManager.getDriver()).getScreenshotAs(OutputType.FILE);
-		Date	d		= new Date();
-		screenshotName = d.toString().replace(":", "_").replace(" ", "_") + ".jpg";
+		File	scrFile			= ((TakesScreenshot)DriverManager.getDriver()).getScreenshotAs(OutputType.FILE);
+		Date	d				= new Date();
+				screenshotName 	= d.toString().replace(":", "_").replace(" ", "_") + ".jpg";
 
 		try
 		{

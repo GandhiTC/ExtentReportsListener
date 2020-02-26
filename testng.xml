@@ -4,7 +4,7 @@
 
 <suite name="Suite">
 	<listeners>
-		<listener class-name="extentlisteners.ExtentListeners" />
+		<listener class-name="extentlisteners.ExtentListener" />
 	</listeners>
 
 	<test name="Test">
